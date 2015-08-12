@@ -1,3 +1,8 @@
+// node
+// > var L = require('./lists.js')
+// > var l = new L()
+// > l.data = [ 'sdsd', 'two', 'three', '4', '5', '6' ]
+
 function List() {
   this.data = [];
 	this.listSize = listSize;
@@ -8,8 +13,8 @@ function List() {
   this.insert = insert;
   this.append = append;
   this.remove = remove;
-//  this.front = front;
-//  this.end = end;
+  this.front = front;
+  this.end = end;
   this.previous = previous;
   this.next = next;
   this.hasPrevious = hasPrevious;
@@ -61,37 +66,60 @@ function remove(element) {
 }
 
 function moveTo(position) {
+  if (position > this.listSize -1) {
+    return false;
+  }
   return this.pos = position;
 }
 
-function getElement(position) {
-  return this.data[position - 1];
+function getElement() {
+  return this.data[this.pos];
 }
 
 function previous() {
-  if (this.pos <= 0) {
-    return false;
-  }
-  return this.data[--this.pos];
+ // if (this.pos <= 0) {
+ //   return false;
+ // }
+  return this.data[this.pos--];
 }
 
 function next() {
-  if (this.pos === this.listSize() - 1) {
-    return false;
-  }
-  return this.data[++this.pos];
+//  if (this.pos === this.listSize() - 1) {
+//    return false;
+//  }
+  return this.data[this.pos++];
 }
 
 function hasPrevious() {
-  return this.pos > 0;
+  if (this.pos <= 0) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function hasNext() {
-  return this.pos <= this.listSize() - 1;
+  if (this.pos > this.listSize() -1) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function contains(element) {
   return this.find(element) > -1;
 }
+
+function front() {
+  return this.pos = 0;
+}
+
+function end() {
+  if (this.listSize()) {
+    return this.pos = this.listSize() - 1;
+  }
+  return false;
+}
+
 
 module.exports = List;
