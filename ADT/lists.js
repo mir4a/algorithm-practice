@@ -17,7 +17,7 @@ function List() {
 //  this.currPos = currPos;
   this.moveTo = moveTo;
   this.getElement = getElement;
-//  this.contains = contains;
+  this.contains = contains;
 }
 
 function clear() {
@@ -41,17 +41,27 @@ function find(element) {
   return -1;
 }
 
-function insert(element) {
-  return this.data.splice(this.pos + 1, 0, element);
+function insert(element, after) {
+  var pos = this.find(after);
+  if (!this.listSize()) {
+    return this.data.push(element);
+  }
+  if (pos > -1) {
+    return this.data.splice(pos + 1, 0, element);
+  }
+  return false;
 }
 
 function remove(element) {
   var pos = this.find(element);
-  return this.data.splice(this.pos,1);
+  if (pos > -1) {
+    return this.data.splice(pos,1);
+  }
+  return false;
 }
 
 function moveTo(position) {
-  this.pos = position;
+  return this.pos = position;
 }
 
 function getElement(position) {
@@ -59,10 +69,16 @@ function getElement(position) {
 }
 
 function previous() {
+  if (this.pos <= 0) {
+    return false;
+  }
   return this.data[--this.pos];
 }
 
 function next() {
+  if (this.pos === this.listSize() - 1) {
+    return false;
+  }
   return this.data[++this.pos];
 }
 
@@ -72,6 +88,10 @@ function hasPrevious() {
 
 function hasNext() {
   return this.pos <= this.listSize() - 1;
+}
+
+function contains(element) {
+  return this.find(element) > -1;
 }
 
 module.exports = List;
